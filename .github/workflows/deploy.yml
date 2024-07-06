@@ -19,6 +19,15 @@ jobs:
         with:
           flutter-version: '3.x'
       - run: flutter pub get
+      - run: |
+          curl --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/shorebirdtech/install/main/install.sh -sSf | bash
+          echo "PATH=$HOME/.shorebird/bin:$PATH" >> $GITHUB_ENV
+      - uses: shorebirdtech/shorebird-setup@v1
+      - run: |
+          shorebird release android
+          shorebird patch android
+        env:
+          SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_TOKEN }}
       - run: flutter build apk --release
       - uses: actions/upload-artifact@v3
         with:
